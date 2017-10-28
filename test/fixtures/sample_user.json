@@ -1,7 +1,0 @@
-export default [
-  "V 0",
-  "daniel d1 {a:'b', c:'d'}",
-  "daniel d2 {a:'b', c:'d'}",
-  "daniel d3 {a:'b', c:'d'}",
-  "V 1"
-]
