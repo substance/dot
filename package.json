@@ -1,0 +1,26 @@
+{
+  "name": "substance-dot",
+  "version": "0.1.0",
+  "description": "Developing an OT based protocol that allows for a decentralized implementation.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/substance/dot.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/substance/dot/issues"
+  },
+  "homepage": "https://github.com/substance/dot#readme",
+  "dependencies": {
+    "substance": "^1.0.0-preview.5"
+  },
+  "devDependencies": {
+    "substance-bundler": "^0.18.5",
+    "substance-test": "^0.9.4"
+  }
+}
