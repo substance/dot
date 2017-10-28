@@ -1,5 +1,5 @@
 export default class Parser {
-  parse() {
+  parseLine(line) {
 
   }
 
