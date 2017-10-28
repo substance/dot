@@ -23,9 +23,7 @@ export default class User {
     if (masterVersion === version) {
       // nothing to do
     } else if (version < masterVersion) {
-      let changes = this.master.getChangesSince(version)
-      let pendingChanges = this.pr.getChanges()
-      this._pullRebase(changes, pendingChanges)
+      this.pullRebase(changes, pendingChanges)
     } else {
       console.error('FIXME: this should not happen')
     }
@@ -35,9 +33,13 @@ export default class User {
     this.pr.appendChange(docChange)
   }
 
-  _pullRebase(changes, pendingChanges) {
-    // change pending Changes so they can be applied
-    // on top of the other
+  pullRebase() {
+    let changes = this.master.getChangesSince(version)
+    let pendingChanges = this.pr.getChanges()
+    // change pending changes so they can be applied
+    // on top of the upstream ones
+    // at the same type rebase the upstream changes so that they
+    // can be applied to the local document
     for (let i = 0; i < changes.length; i++) {
       let a = changes[i].clone()
       for (let j = 0; j < pendingChanges.length; j++) {

@@ -14,14 +14,18 @@ export default class Master {
     let masterVersion = this.master.getVersion()
     let prVersion = pr.getVersion()
     if (prVersion === masterVersion) {
-      let userId = pr.getUserId()
-      let changes = pr.getChanges()
-      this.master.appendChanges(userId, changes)
-      this.master.incrementVersion()
-      this.master.emit('update')
     } else {
       console.error('FIXME: this should not happen')
     }
+  }
+
+  merge(pr) {
+    const master = this.master
+    let userId = pr.getUserId()
+    let changes = pr.getChanges()
+    master.appendChanges(userId, changes)
+    master.incrementVersion()
+    master.emit('update')
   }
 
 }
