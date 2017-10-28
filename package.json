@@ -17,9 +17,10 @@
   },
   "homepage": "https://github.com/substance/dot#readme",
   "dependencies": {
-    "substance": "^1.0.0-preview.5"
+    "substance": "^1.0.0-preview.6"
   },
   "devDependencies": {
+    "font-awesome": "^4.7.0",
     "substance-bundler": "^0.18.5",
     "substance-test": "^0.9.4"
   }

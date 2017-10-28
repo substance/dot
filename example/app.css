@@ -1,0 +1,14 @@
+@import url('../node_modules/font-awesome/css/font-awesome.min.css');
+
+@import '../node_modules/substance/substance.css';
+@import '../node_modules/substance/substance-reset.css';
+@import '../node_modules/substance/substance-pagestyle.css';
+
+body {
+  overflow: hidden;
+}
+
+.sc-editor {
+  background: #efefef;
+  padding: 5px 10px;
+}

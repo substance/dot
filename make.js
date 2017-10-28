@@ -12,6 +12,20 @@ b.js('index.js', {
   }
 })
 
+b.js('example/app.js', {
+  target: {
+    dest: 'tmp/app.js',
+    format: 'umd',
+    moduleName: 'dotExample'
+  },
+  external: ['substance', 'substance-dot'],
+  globals: {
+    'substance': 'window.substance',
+    'substance-dot': 'window.substanceDot'
+  }
+})
+b.css('example/app.css', 'tmp/app.css', { variables: true })
+
 b.js('test/**/*.test.js', {
   dest: 'tmp/tests.js',
   format: 'umd', moduleName: 'tests',
