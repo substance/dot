@@ -10,10 +10,15 @@ export default class Master {
     })
   }
 
+  dispose() {
+    this.prs.forEach(pr => pr.off(this))
+  }
+
   onPullRequest(pr) {
     let masterVersion = this.master.getVersion()
     let prVersion = pr.getVersion()
     if (prVersion === masterVersion) {
+      this.merge(pr)
     } else {
       console.error('FIXME: this should not happen')
     }

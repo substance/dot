@@ -9,10 +9,17 @@ export default class User {
   constructor(pr, master, editorSession) {
     this.pr = pr
     this.master = master
+    this.editorSession = editorSession
 
     master.on('update', () => {
       this.onMerge()
     })
+    editorSession.on('commit', this._onCommit, this)
+  }
+
+  dispose() {
+    this.master.off(this)
+    this.editorSession.off(this)
   }
 
   // this gets called whenever master is updated
@@ -23,7 +30,7 @@ export default class User {
     if (masterVersion === version) {
       // nothing to do
     } else if (version < masterVersion) {
-      this.pullRebase(changes, pendingChanges)
+      this.pullRebase()
     } else {
       console.error('FIXME: this should not happen')
     }
@@ -34,6 +41,7 @@ export default class User {
   }
 
   pullRebase() {
+    let version = this.pr.getVersion()
     let changes = this.master.getChangesSince(version)
     let pendingChanges = this.pr.getChanges()
     // change pending changes so they can be applied
@@ -54,22 +62,35 @@ export default class User {
         // we use OT to get a version of the upstream change
         // that we can apply to our local document
         // Note: this is done inplace, so be aware of getting
-        this._transform(remote, local)
+        this._transform(a, b)
       }
     }
     // now we update the editor session so that
     // we see the upstream changes
     changes.forEach((change) => {
-      editorSession._applyChange(change)
+      this.editorSession._applyChange(change)
     })
+    this.pr.setChanges(this.master.getVersion(), changes)
+    this.pr.emit('update')
   }
 
   _transform(A, B) {
     // this way we hope to get the same result everywhere
-    if (A.userId > B.userId) {
+    let swap = false
+    if (A.timestamp > B.timestamp) {
+      swap = true
+    } else if (A.timestamp === B.timestamp) {
+      swap = (A.sha > B.sha)
+    }
+    if (swap) {
       operationHelpers.transformDocumentChange(B, A)
     } else {
       operationHelpers.transformDocumentChange(A, B)
     }
+  }
+
+  _onCommit(change) {
+    this.pr.appendChange(change)
+    this.pr.emit('update')
   }
 }
