@@ -22,14 +22,33 @@ class ChangeLog extends EventEmitter {
   }
 
   getChangesSince(version) {
+    let changes = []
+    for (let i = this.log.length; i > 0; i--) {
+      const line = this.log[i-1]
+      const data = this.parser.parseLine(line)
+      if(data.type === 'version') {
+        if(data.id === version) break
+      } else {
+        changes.push(data.change)
+      }
+    }
 
+    return changes
   }
 
   appendChanges(changes) {
-
+    changes.forEach(change => {
+      this._appendChange(change)
+    })
   }
 
   incrementVersion() {
     this.emit('update')
+  }
+
+  _appendChange(change) {
+    const serializedChange = JSON.stringify(change.toJSON())
+    const lineEls = [change.userId, change.sha, serializedChange]
+    this.log.append(lineEls.join(' '))
   }
 }
