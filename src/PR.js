@@ -3,6 +3,7 @@ import Parser from './Parser'
 
 class PR extends EventEmitter {
   constructor(log, userId) {
+    super(log, userId)
     this.userId = userId
     this.log = log
     this.parser = new Parser()
@@ -48,7 +49,7 @@ class PR extends EventEmitter {
 
   setChanges(version, changes) {
     this.log = []
-    this.log.append('V ' + version)
+    this.log.push('V ' + version)
     changes.forEach(change => {
       this._appendChange(change)
     })
@@ -60,7 +61,7 @@ class PR extends EventEmitter {
     const changeId = change.sha
     const serializedChange = JSON.stringify(change.toJSON())
     const lineEls = [userId, changeId, serializedChange]
-    this.log.append(lineEls.join(' '))
+    this.log.push(lineEls.join(' '))
   }
 }
 

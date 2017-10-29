@@ -3,6 +3,7 @@ import Parser from './Parser'
 
 class ChangeLog extends EventEmitter {
   constructor(log) {
+    super(log)
     this.log = log
     this.parser = new Parser()
   }
@@ -52,3 +53,5 @@ class ChangeLog extends EventEmitter {
     this.log.append(lineEls.join(' '))
   }
 }
+
+export default ChangeLog
