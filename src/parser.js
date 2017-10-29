@@ -1,6 +1,6 @@
 export default class Parser {
   parseLine(line) {
-    const data = line.split(' ')
+    const data = line.split(/ +(?=(?:(?:[^"]*"){2})*[^"]*$)/g)
     const type = data.length === 2 ? 'version' : 'change'
     let res = {
       type: type,

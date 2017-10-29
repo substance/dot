@@ -37,9 +37,9 @@ class ChangeLog extends EventEmitter {
     return changes
   }
 
-  appendChanges(changes) {
+  appendChanges(userId, changes) {
     changes.forEach(change => {
-      this._appendChange(change)
+      this._appendChange(userId, change)
     })
   }
 
@@ -47,10 +47,10 @@ class ChangeLog extends EventEmitter {
     this.emit('update')
   }
 
-  _appendChange(change) {
-    const serializedChange = JSON.stringify(change.toJSON())
-    const lineEls = [change.userId, change.sha, serializedChange]
-    this.log.append(lineEls.join(' '))
+  _appendChange(userId, change) {
+    const serializedChange = JSON.stringify(change)
+    const lineEls = [userId, change.sha, serializedChange]
+    this.log.push(lineEls.join(' '))
   }
 }
 
