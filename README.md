@@ -144,3 +144,11 @@ npm start
 
 Then open `http://localhost:4002/test`.
 Open the Inspector to step through the example.
+
+# Why 'dot'?
+
+Maybe:
+- because its short
+- decentralized operational transformation
+- document editor using `dat.js`
+- like `git` but for documents
