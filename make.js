@@ -31,7 +31,8 @@ b.js('test/**/*.test.js', {
   format: 'umd', moduleName: 'tests',
   external: {
     'substance': 'window.substance',
-    'substance-test': 'window.substanceTest'
+    'substance-test': 'window.substanceTest',
+    'substance-dot': 'window.substanceDot'
   },
 })
 

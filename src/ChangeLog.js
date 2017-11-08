@@ -1,39 +1,34 @@
 import { EventEmitter } from 'substance'
-import Parser from './Parser'
 
-class ChangeLog extends EventEmitter {
+export default class ChangeLog extends EventEmitter {
+
   constructor(log) {
-    super(log)
+    super()
+
     this.log = log
-    this.parser = new Parser()
   }
 
   getVersion() {
-    let version = 0
-    for (let i = this.log.length; i > 0; i--) {
-      const line = this.log[i-1]
-      const data = this.parser.parseLine(line)
-      if(data.type === 'version') {
-        version = data.id
-        break
-      }
+    const L = this.log.length
+    // Note: usually the version is in the last line
+    // only while updating the
+    const record = this.log.get(L-1)
+    if(record.type !== 'version') {
+      throw new Error('Illegal change-log.')
     }
-
-    return version
+    return record.version
   }
 
   getChangesSince(version) {
     let changes = []
-    for (let i = this.log.length; i > 0; i--) {
-      const line = this.log[i-1]
-      const data = this.parser.parseLine(line)
-      if(data.type === 'version') {
-        if(data.id === version) break
-      } else {
-        changes.push(data.change)
+    for (let i = this.log.length-1; i >= 0; i--) {
+      const record = this.log.get(i)
+      if (record.version === version) {
+        break
+      } else if (record.change) {
+        changes.unshift(record.change)
       }
     }
-
     return changes
   }
 
@@ -43,15 +38,16 @@ class ChangeLog extends EventEmitter {
     })
   }
 
-  incrementVersion() {
+  bumpVersion(version) {
+    this.log.append({ type: 'version', version })
     this.emit('update')
   }
 
   _appendChange(userId, change) {
-    const serializedChange = JSON.stringify(change)
-    const lineEls = [userId, change.sha, serializedChange]
-    this.log.push(lineEls.join(' '))
+    this.log.append({
+      type: 'change',
+      userId,
+      change
+    })
   }
 }
-
-export default ChangeLog

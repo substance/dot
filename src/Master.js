@@ -1,36 +1,37 @@
 export default class Master {
 
-  constructor(master, prs) {
-    this.master = master
-    this.prs = prs
-    prs.forEach((pr) => {
-      pr.on('update', () => {
-        this.onPullRequest(pr)
-      })
-    })
+  constructor(changeLog) {
+    this.changeLog = changeLog
+    this.prs = []
   }
 
   dispose() {
     this.prs.forEach(pr => pr.off(this))
   }
 
+  watchPullRequest(pr) {
+    this.prs.push(pr)
+    pr.on('update', this.onPullRequest, this)
+  }
+
   onPullRequest(pr) {
-    let masterVersion = this.master.getVersion()
+    let masterVersion = this.changeLog.getVersion()
     let prVersion = pr.getVersion()
     if (prVersion === masterVersion) {
       this.merge(pr)
     } else {
-      console.error('FIXME: this should not happen')
+      // This happens whenever two PRs come in simultanously
+      // then the first is merged and the second gets outdated
     }
   }
 
   merge(pr) {
-    const master = this.master
+    const changeLog = this.changeLog
     let userId = pr.getUserId()
     let changes = pr.getChanges()
-    master.appendChanges(userId, changes)
-    master.incrementVersion()
-    master.emit('update')
+    let version = changeLog.getVersion()
+    changeLog.appendChanges(userId, changes)
+    changeLog.bumpVersion(version+1)
   }
 
 }
