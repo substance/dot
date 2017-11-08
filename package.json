@@ -4,6 +4,7 @@
   "description": "Developing an OT based protocol that allows for a decentralized implementation.",
   "main": "index.js",
   "scripts": {
+    "start": "node make -w -s",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
