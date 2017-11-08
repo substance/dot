@@ -132,3 +132,14 @@ There are only two cases which need to be considered
 > Note: with two concurrent changes, the first would get merged, but the second ignored, because by then the master version would have been incremented already.
 
 2. Pull-Rebase: A user detects a change of master. If there is a change done by a different user, it applies the foreign change, and rebases the local changes. If there is a change of the very same user, the change gets removed from list of pending changes. The local version gets bumped to the latest master.
+
+# Getting Started
+
+```
+git clone https://github.com/substance/dot
+cd dot
+npm install
+npm start
+```
+
+Then open `http://localhost:4002/test`
