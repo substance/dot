@@ -142,4 +142,5 @@ npm install
 npm start
 ```
 
-Then open `http://localhost:4002/test`
+Then open `http://localhost:4002/test`.
+Open the Inspector to step through the example.
