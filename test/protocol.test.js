@@ -1,12 +1,13 @@
 import { test } from 'substance-test'
 import {
+  isString, isFunction,
   ProseEditorPackage, EditorSession,
   Configurator, DocumentChange
 } from 'substance'
 import { User, Master, ArrayLog, PullRequest, ChangeLog } from 'substance-dot'
 
 import simple from './fixtures/simple'
-import { example1 } from './fixtures/sample_logs'
+import { example1, fix_typo_conflict } from './fixtures/sample_logs'
 
 // a narrative test that serves as a demo
 test("Concurrent Editing: Inserting into the same paragraph", (t) => {
@@ -91,12 +92,41 @@ test("Concurrent Editing: Inserting into the same paragraph", (t) => {
   t.end()
 })
 
+test("Fix-typo conflict", (t) => {
+  let masterLog = new ChangeLog(new ArrayLog(fix_typo_conflict.master))
+  let prA = new PullRequest('A', new ArrayLog(fix_typo_conflict.A))
+  let prB = new PullRequest('B', new ArrayLog(fix_typo_conflict.B))
+  let seed = (doc) => {
+    doc.create({ id: 'p1', type: 'paragraph', content: fix_typo_conflict.text })
+  }
+  let session1 = _setupEditorSession(seed, prA.getChanges())
+  let session2 = _setupEditorSession(seed, prB.getChanges())
+  let master = new Master(masterLog)
+  let userA = new User(prA, session1, masterLog)
+  let userB = new User(prB, session2, masterLog)
+  let doc1 = session1.getDocument()
+  let doc2 = session2.getDocument()
+  t.equal(doc1.get(['p1', 'content']), 'substance', 'User A has changed their document')
+  t.equal(doc2.get(['p1', 'content']), 'substance', 'User B has changed their document')
+  _sync(master, userA, userB)
+  t.equal(masterLog.getVersion(), 2, 'Document version should be correct')
+  let text1 = doc1.get(['p1', 'content'])
+  let text2 = doc2.get(['p1', 'content'])
+  t.equal(text1, text2, 'Both users should see the same content')
+  t.end()
+})
 
-function _setupEditorSession(sample, initialChanges) {
+function _setupEditorSession(seed, initialChanges) {
   let configurator = new Configurator()
   configurator.import(ProseEditorPackage)
-  let importer = configurator.createImporter('html')
-  let doc = importer.importDocument(sample)
+  let doc
+  // seed given as HTML string
+  if (isString(seed)) {
+    let importer = configurator.createImporter('html')
+    doc = importer.importDocument(seed)
+  } else if (isFunction(seed)) {
+    doc = configurator.createDocument(seed)
+  }
   let editorSession = new EditorSession(doc, { configurator })
   if (initialChanges) {
     let ops = initialChanges.reduce((ops, change) => {
@@ -125,4 +155,13 @@ function _renderLogs(t, masterLog, prA, prB) {
     <h4>PR B</h4>
     <pre>${prB.log.dump()}</pre>
   `))
+}
+
+function _sync(master, userA, userB) {
+  master.onPullRequest(userA.pr)
+  userA.onMerge()
+  userB.onMerge()
+  master.onPullRequest(userB.pr)
+  userA.onMerge()
+  userB.onMerge()
 }

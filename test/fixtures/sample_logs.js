@@ -13,3 +13,18 @@ export const example1 = {
     'C B {"id":"bcb4f065","ops":[["u", "paragraph-1.content", "t+", 8, "Z"]]}',
   ]
 }
+
+export const fix_typo_conflict = {
+  text: 'subtsance',
+  master: [ 'V 0' ],
+  A: [
+    'V 0',
+    'C A {"id":"ed023330","ops":[["u", "p1.content", "t-", 3, "t"]]}',
+    'C A {"id":"cf64c5c2","ops":[["u", "p1.content", "t+", 4, "t"]]}'
+  ],
+  B: [
+    'V 0',
+    'C B {"id":"468999c2","ops":[["u", "p1.content", "t-", 3, "t"]]}',
+    'C B {"id":"18f54be3","ops":[["u", "p1.content", "t+", 4, "t"]]}'
+  ]
+}
