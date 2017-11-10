@@ -1,5 +1,7 @@
 # Decentralized Collaborative Document Editing
 
+** THIS IS WORK IN PROGRESS **
+
 ## Mission
 
 Developing an OT based protocol that allows for a decentralized implementation.
