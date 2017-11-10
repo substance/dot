@@ -18,9 +18,12 @@
   },
   "homepage": "https://github.com/substance/dot#readme",
   "dependencies": {
-    "substance": "^1.0.0-preview.8"
+    "fs-reverse": "0.0.3",
+    "substance": "^1.0.0-preview.8",
+    "yargs": "^10.0.3"
   },
   "devDependencies": {
+    "electron": "^1.7.9",
     "font-awesome": "^4.7.0",
     "substance-bundler": "^0.18.5",
     "substance-test": "^0.9.4"
