@@ -22,7 +22,6 @@
   },
   "devDependencies": {
     "font-awesome": "^4.7.0",
-    "substance-bundler": "^0.18.5",
     "substance-test": "^0.9.4"
   }
 }
