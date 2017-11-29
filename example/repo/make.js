@@ -5,25 +5,42 @@ const indexFixture = require('./index.fixture')
 
 const REPO = 'tmp/repo'
 
-b.rm(REPO)
-
-/*
-  repo/
-    index/
-     0 -> block 0
-     1 -> block 1
-     2 -> block 2
-*/
-b.custom('Creating repo', {
-  src: path.join(__dirname, 'index.fixture.js'),
-  dst: REPO+'/index',
-  execute() {
-    indexFixture.forEach((change) => {
-      b.writeFileSync(path.join(REPO, 'index', String(change.version)), JSON.stringify(change, 0, 2))
-    })
-  }
+b.task('clean', () => {
+  b.rm(REPO)
+  b.rm('tmp/userA')
+  b.rm('tmp/userB')
 })
 
-b.copy(REPO, 'tmp/userA/.dot/repo')
+b.task('init', ['clean'], () => {
+  b.custom('Init...', {
+    src: '',
+    dest: '',
+    execute() {
+      b.writeFileSync('tmp/userA/.dot/repo/pr/userA', '')
+      b.writeFileSync('tmp/userB/.dot/repo/pr/userB', '')
+    }
+  })
+})
 
-b.copy(REPO, 'tmp/userB/.dot/repo')
+b.task('repo', ['init'], () => {
+  b.custom('Creating repo', {
+    src: path.join(__dirname, 'index.fixture.js'),
+    dst: REPO+'/index',
+    execute() {
+      indexFixture.forEach((change) => {
+        b.writeFileSync(path.join(REPO, 'index', String(change.version)), JSON.stringify(change, 0, 2))
+      })
+      b.writeFileSync(path.join(REPO, 'pr', 'userA'), '')
+      b.writeFileSync(path.join(REPO, 'pr', 'userB'), '')
+    }
+  })
+})
+
+b.task('clone', ['repo'], () => {
+  b.copy(path.join(REPO, 'index'), 'tmp/userA/.dot/repo/index')
+  b.copy(path.join('tmp/userA/.dot/repo/pr/userA'), path.join(REPO, 'pr', 'userA'))
+  b.copy(path.join(REPO, 'index'), 'tmp/userB/.dot/repo/index')
+  b.copy(path.join('tmp/userB/.dot/repo/pr/userB'), path.join(REPO, 'pr', 'userB'))
+})
+
+b.task('default', ['repo', 'clone'])
