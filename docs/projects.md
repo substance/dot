@@ -2,6 +2,7 @@
 
 ## VCS - Iteration I <a id="vcs-iteration-1"></a>
 
+- Issue Tracker: [Project 1](https://github.com/substance/dot/projects/1)
 - Background: [Decentralised Vesion Control System](vcs.md)
 - **Topic: Simple Editing**
 - Consider a scenario with a single user using `Texture`
@@ -17,7 +18,6 @@
   -> need to detect if the working copy is in sync with the index (including local changes)
 - Saving the document writes the local changes to the working copy
 - The user can see local changes using `dot status`
-- Issue Tracker: [Project 1](https://github.com/substance/dot/projects/1)
 
 Goals:
 - a simple way to create an empty Texture document
