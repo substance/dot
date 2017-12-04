@@ -13,8 +13,8 @@
   assets/ (Folder)
   ```
 - The user opens the editor using `texture .`
-- The user changes the document, marking the local version as unsaved
-- Detect if the working copy is in sync with the index (including local changes)
+- The user changes the document, which marks the local version as unsaved
+  -> need to detect if the working copy is in sync with the index (including local changes)
 - Saving the document writes the local changes to the working copy
 - The user can see local changes using `dot status`
 - Issue Tracker: [Project 1](https://github.com/substance/dot/projects/1)
