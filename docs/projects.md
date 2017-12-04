@@ -2,6 +2,7 @@
 
 ## VCS - Iteration I <a id="vcs-iteration-1"></a>
 
+- Background: [Decentralised Vesion Control System](vcs.md)
 - **Topic: Simple Editing**
 - Consider a scenario with a single user using `Texture`
 - The user starts with an empty folder
@@ -13,8 +14,10 @@
   ```
 - The user opens the editor using `texture .`
 - The user changes the document, marking the local version as unsaved
+- Detect if the working copy is in sync with the index (including local changes)
 - Saving the document writes the local changes to the working copy
 - The user can see local changes using `dot status`
+- Issue Tracker: [Project 1](https://github.com/substance/dot/projects/1)
 
 Goals:
 - a simple way to create an empty Texture document
@@ -24,11 +27,11 @@ No-Goals:
 
 - a generalized `dot` CLI
 - seeding the index with an existing working copy
-- detection if the working copy is in sync with the index
 - ability to do versioning (commits, checkout)
 
 ## VCS - Iteration II <a id="vcs-iteration-2"></a>
 
+- Background: [Decentralised Vesion Control System](vcs.md)
 - **Topic: Versioning**
 - Consider same scenario as in Iteration I
 - The user starts with a seeded Texture document
@@ -43,6 +46,7 @@ Goals:
 
 ## VCS - Iteration III <a id="vcs-iteration-3"></a>
 
+- Background: [Decentralised Vesion Control System](vcs.md)
 - **Topic: Ingestion**
 - Consider the same scenario as in Iteration II
 - The user starts with a folder with this structure:
