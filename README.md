@@ -1,4 +1,4 @@
-# Decentralized Collaborative Document Editing
+# Dot - A distributed version control system for content, not files
 
 ** THIS IS WORK IN PROGRESS **
 
